@@ -16,6 +16,17 @@ npm run test       # vitest (30 tests)
 npm run build && npm run preview
 ```
 
+## Deploy to Cloudflare (terminal)
+Uses Cloudflare Workers static assets via Wrangler (config in `wrangler.jsonc`, output `dist/`).
+```bash
+npx wrangler login      # opens the browser once to authorise your Cloudflare account
+npm run deploy          # builds with Vite, then uploads dist/ with `wrangler deploy`
+```
+Wrangler prints the live URL, e.g. `https://atlas-flight-simulator.<your-subdomain>.workers.dev`.
+- To ship with Google 3D Tiles, put `VITE_GOOGLE_MAPS_API_KEY` in `.env.local` **before** `npm run deploy` (Vite bakes it into the bundle at build time) and add your `*.workers.dev` / custom domain to the key's HTTP-referrer restrictions.
+- Change the worker name / URL by editing `"name"` in `wrangler.jsonc`.
+- Check config without deploying: `npx wrangler deploy --dry-run`.
+
 ## Google 3D Tiles key
 1. Create `.env.local` in the project root: `VITE_GOOGLE_MAPS_API_KEY=your_key`
 2. In Google Cloud: enable Map Tiles API, enable billing, restrict the key by HTTP referrer (e.g. `http://localhost:5173/*`) and to the Map Tiles API.
@@ -66,5 +77,5 @@ Aurora Pacific Air (AURORA) · Skyforge Airways (FORGE) · Celestial Global (CEL
 
 ## Known limitations
 - Live Google 3D Tiles path untested without a key; no collision with photogrammetry terrain/buildings.
-- Single aircraft type. The cockpit is procedural (live PFD/ND/engine/wheel displays, glareshield autopilot panel, overhead, pedestal, animated yokes) — stylised, not photoreal.
+- Single aircraft type; cockpit view has a simple frame (glareshield/pillars), not a modelled instrument panel.
 - Geoid undulations are approximate; magnetic heading not modelled (HUD shows true heading).

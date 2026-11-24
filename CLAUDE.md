@@ -1,6 +1,6 @@
 # CLAUDE.md — Atlas Flight Simulator
 
-Commands: `npm run dev` · `npm run typecheck` · `npm run test` · `npm run build`.
+Commands: `npm run dev` · `npm run typecheck` · `npm run test` · `npm run build` · `npm run deploy` (Cloudflare Workers static assets via wrangler.jsonc).
 
 Conventions (do not break):
 - Scene frame: X = East, Y = Up, Z = South (North = −Z). Aircraft body: forward −Z, up +Y, right +X.
