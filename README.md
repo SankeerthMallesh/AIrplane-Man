@@ -54,6 +54,9 @@ Integration: `TilesRenderer` from `3d-tiles-renderer` (NASA-AMMOS) with `GoogleC
 
 Takeoff: Space (release brakes), hold Shift to 100 %, at ~140 kt hold W, then G (gear up) and F (flaps up).
 
+## Admin panel (console)
+Open the game (local or deployed), launch a flight, open the browser console (Chrome: Cmd+Option+J / Ctrl+Shift+J), paste the contents of `tools/admin-panel.js` and press Enter. Press <kbd>`</kbd> to show or hide it. It sets speed, altitude and heading, and has thrust/mass/time-scale sliders, wind, freeze, god mode, final-approach teleport and crash repair. It works through the `window.atlas` handle exposed in `src/main.ts`.
+
 ## Geography
 - WGS84 (a = 6378137 m, f = 1/298.257223563); geodetic↔ECEF in `src/geo/Geodesy.ts` (Bowring iteration, pole-stable height).
 - Local tangent plane per flight: **X = East, Y = Up, Z = South (North = −Z)**. Heading h (true, clockwise from north) → direction (sin h, 0, −cos h); quaternion = rotation −h about +Y.

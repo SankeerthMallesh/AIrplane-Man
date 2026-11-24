@@ -25,8 +25,8 @@ if (!(canvas instanceof HTMLCanvasElement) || !ui) {
 } else {
   try {
     const app = new Application(canvas, ui);
-    // Dev-only handle for debugging in the browser console.
-    if (import.meta.env.DEV) Object.assign(window, { atlas: app });
+    // Console handle used by tools/admin-panel.js (single-player game, so exposing it is harmless).
+    Object.assign(window, { atlas: app });
   } catch (err) {
     console.error('[Boot] application failed to start', err);
     fatal('Could not start the simulator', 'The 3D renderer failed to initialise. Check that hardware acceleration is enabled.');
