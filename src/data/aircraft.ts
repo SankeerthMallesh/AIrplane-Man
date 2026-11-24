@@ -159,7 +159,7 @@ export const ATLAS_AJ220: AircraftConfiguration = {
     { name: 'TAKEOFF', deflection: 0.45, maxSpeedKt: 215 },
     { name: 'LANDING', deflection: 1, maxSpeedKt: 177 },
   ],
-  cockpitEye: [0, 1.05, -16.3],
+  cockpitEye: [-0.55, 1.08, -16.05],
   gearTransitionS: 7,
   flapRatePerS: 0.12,
 };

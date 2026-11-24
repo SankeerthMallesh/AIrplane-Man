@@ -40,6 +40,7 @@ export class CameraRig {
   private readonly flatV = new Vector3();
   private readonly desiredV = new Vector3();
   private readonly velV = new Vector3();
+  private readonly lookDown = new Quaternion().setFromAxisAngle(new Vector3(1, 0, 0), -0.22);
   private readonly listeners: Array<[string, EventListener]> = [];
   onModeChanged: (m: CameraMode) => void = () => undefined;
 
@@ -113,8 +114,9 @@ export class CameraRig {
     const targetQ = this.tmpQuat;
     if (this.mode === 'COCKPIT') {
       target.set(...this.cockpitEye).applyQuaternion(quat).add(pos);
-      targetQ.copy(quat);
-      this.camera.near = 0.1;
+      // Look slightly down so the instrument panel frames the bottom of the view.
+      targetQ.copy(quat).multiply(this.lookDown);
+      this.camera.near = 0.05;
     } else if (this.mode === 'CHASE') {
       // Follow behind along a heading-only frame blended with the true attitude, so rolls do
       // not swing the camera violently.

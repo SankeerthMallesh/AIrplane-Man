@@ -102,6 +102,12 @@ export class FlightSession {
     }, dt);
     this.rig.update(dt, this.renderPos, this.renderQuat, s.velocity);
     this.aircraft.setCockpitMode(this.rig.mode === 'COCKPIT');
+    this.aircraft.updateCockpit({
+      pitchDeg: s.pitchDeg, bankDeg: s.bankDeg, iasKt: s.indicatedAirspeed * 1.94384, altFt: s.altitudeMslM * 3.28084,
+      vsFpm: s.verticalSpeed * 196.85, headingDeg: s.headingDeg, n1: s.throttle, throttle: s.throttleCommand,
+      flaps: ATLAS_AJ220.flaps[s.flapIndex]?.name ?? 'UP', gear: s.gearPosition > 0.99 ? 'DOWN' : s.gearPosition < 0.01 ? 'UP' : 'TRANSIT',
+      brakes: s.brakes, elevator: s.elevator, aileron: s.aileron,
+    }, dt);
     this.environment.follow(this.aircraft.root);
   }
 

@@ -66,5 +66,5 @@ Aurora Pacific Air (AURORA) · Skyforge Airways (FORGE) · Celestial Global (CEL
 
 ## Known limitations
 - Live Google 3D Tiles path untested without a key; no collision with photogrammetry terrain/buildings.
-- Single aircraft type; cockpit view has a simple frame (glareshield/pillars), not a modelled instrument panel.
+- Single aircraft type. The cockpit is procedural (live PFD/ND/engine/wheel displays, glareshield autopilot panel, overhead, pedestal, animated yokes) — stylised, not photoreal.
 - Geoid undulations are approximate; magnetic heading not modelled (HUD shows true heading).

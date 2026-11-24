@@ -3,6 +3,7 @@ import {
   Material, Mesh, MeshBasicMaterial, MeshStandardMaterial, Object3D, SphereGeometry, SpotLight, Texture, TorusGeometry, Vector2,
 } from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
+import { CockpitInterior, type CockpitData } from './CockpitInterior';
 import { buildFuselageGeometry, buildLiftingSurface, surfaceStation, type FuselageProfile, type SurfaceParams } from './Geometry';
 import { degToRad } from '../utils/MathUtils';
 
@@ -106,6 +107,7 @@ export class AircraftModel {
   readonly root = new Group();
   readonly materials = createMaterials();
   readonly cockpitFrame = new Group();
+  readonly cockpit = new CockpitInterior();
   private readonly geometries: BufferGeometry[] = [];
   private readonly surfaces: Record<'leftAileron' | 'rightAileron' | 'leftFlap' | 'rightFlap' | 'leftElevator' | 'rightElevator' | 'rudder', ControlSurface>;
   private readonly spoilers: Group[] = [];
@@ -272,20 +274,8 @@ export class AircraftModel {
   }
 
   private buildCockpitFrame(): void {
-    const m = this.materials.cockpit;
     this.cockpitFrame.name = 'CockpitFrame';
-    const glare = this.mesh(new BoxGeometry(2.4, 0.5, 1.1), m, 'Glareshield');
-    glare.position.set(0, 0.55, -17.1);
-    this.cockpitFrame.add(glare);
-    for (const x of [-0.85, 0.85]) {
-      const pillar = this.mesh(new BoxGeometry(0.07, 0.9, 0.07), m, 'Pillar');
-      pillar.position.set(x, 1.15, -17.35 + Math.abs(x) * 0.35);
-      pillar.rotation.x = degToRad(-35);
-      this.cockpitFrame.add(pillar);
-    }
-    const roof = this.mesh(new BoxGeometry(2.6, 0.08, 1.2), m, 'CockpitRoof');
-    roof.position.set(0, 1.62, -16.5);
-    this.cockpitFrame.add(roof);
+    this.cockpitFrame.add(this.cockpit.group);
     this.cockpitFrame.visible = false;
     this.root.add(this.cockpitFrame);
   }
@@ -397,6 +387,11 @@ export class AircraftModel {
 
   setCockpitMode(enabled: boolean): void {
     this.cockpitFrame.visible = enabled;
+    this.cockpit.group.visible = enabled;
+  }
+
+  updateCockpit(data: CockpitData, dt: number): void {
+    this.cockpit.update(data, dt);
   }
 
   /** Synchronises every animated part with the simulated state. */
@@ -444,6 +439,7 @@ export class AircraftModel {
   }
 
   dispose(): void {
+    this.cockpit.dispose();
     for (const g of this.geometries) g.dispose();
     const textures = new Set<Texture>();
     for (const mat of Object.values(this.materials) as Material[]) {
